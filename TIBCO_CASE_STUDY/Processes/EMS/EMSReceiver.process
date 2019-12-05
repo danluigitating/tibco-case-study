@@ -86,7 +86,7 @@
         <pd:inputBindings>
             <ns2:WriteActivityInputTextClass>
                 <fileName>
-                    <xsl:value-of select="concat( $Parse-XML/shipmentInfo/shipmentNumber, &quot;.csv&quot;)"/>
+                    <xsl:value-of select="concat(&quot;D:\CSV\&quot;, $Parse-XML/shipmentInfo/shipmentNumber, &quot;.csv&quot;)"/>
                 </fileName>
                 <textContent>
                     <xsl:value-of select="concat( &quot;Shipment Number&quot;, &quot;, &quot;, &quot;Shipment Type&quot; , &quot;, &quot;, &quot;Shipment Status&quot;, &quot;&#xA;&quot;,  $Parse-XML/shipmentInfo/shipmentNumber, &quot;, &quot; ,$Parse-XML/shipmentInfo/shipmentType,  &quot;, &quot;, $Parse-XML/shipmentInfo/shipmentStatus)"/>
