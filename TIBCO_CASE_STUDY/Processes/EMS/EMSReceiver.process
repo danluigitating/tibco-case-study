@@ -81,6 +81,7 @@
         <config>
             <encoding>text</encoding>
             <compressFile>None</compressFile>
+            <createMissingDirectories>true</createMissingDirectories>
         </config>
         <pd:inputBindings>
             <ns2:WriteActivityInputTextClass>

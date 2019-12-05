@@ -9,7 +9,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <script type="text/javascript">
       <xsl:text>
         function download(){
-          window.location.href = "http://itamnl17-w10:80/?download=true";
+          window.location.href = "http://itamnl32-w10:80/?download=true";
         }
       </xsl:text>
     </script>

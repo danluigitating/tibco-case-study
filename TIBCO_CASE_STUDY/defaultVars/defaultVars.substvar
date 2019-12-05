@@ -43,11 +43,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>Home</name>
-			<value>D:\TIBCO_CASE_STUDY\Resources\Home.htm</value>
+			<value>D:\New folder\TIBCO_CASE_STUDY\Resources\Home.htm</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1575520228830</modTime>
+			<modTime>1575538363658</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JmsProviderUrl</name>
