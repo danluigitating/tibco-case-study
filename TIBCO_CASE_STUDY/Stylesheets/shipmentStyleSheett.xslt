@@ -13,7 +13,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         }
       </xsl:text>
     </script>
-    <h2>My CD Collection</h2>
+    <h2>Shipment information</h2>
     <table>
       <tr bgcolor="#9acd32">
         <th>shipmentNumber</th>

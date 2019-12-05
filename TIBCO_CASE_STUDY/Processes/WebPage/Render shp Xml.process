@@ -9,7 +9,7 @@
         <pd:type>com.tibco.plugin.http.HTTPEventSource</pd:type>
         <pd:resourceType>httppalette.httpEventSource</pd:resourceType>
         <pd:x>148</pd:x>
-        <pd:y>55</pd:y>
+        <pd:y>68</pd:y>
         <config>
             <outputMode>String</outputMode>
             <defaultEncoding>ISO8859_1</defaultEncoding>
@@ -53,10 +53,26 @@
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1575456656327</pd:targetNamespace>
+    <pd:activity name="Error log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>378</pd:x>
+        <pd:y>207</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <message>
+                    <xsl:value-of select="&quot;Parameters missing&quot;"/>
+                </message>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:activity name="JDBC Query">
         <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
-        <pd:x>382</pd:x>
+        <pd:x>374</pd:x>
         <pd:y>68</pd:y>
         <config>
             <timeout>10</timeout>
@@ -271,27 +287,42 @@ WHERE shipment_num = ?</statement>
             </jdbcQueryActivityInput>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="Log">
-        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
-        <pd:resourceType>ae.activities.log</pd:resourceType>
-        <pd:x>685</pd:x>
-        <pd:y>166</pd:y>
+    <pd:activity name="JMS Queue Sender">
+        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
+        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
+        <pd:x>694</pd:x>
+        <pd:y>307</pd:y>
         <config>
-            <role>User</role>
+            <PermittedMessageType>Text</PermittedMessageType>
+            <SessionAttributes>
+                <transacted>false</transacted>
+                <acknowledgeMode>1</acknowledgeMode>
+                <maxSessions>1</maxSessions>
+                <destination>TIBCO.CASE.STUDY</destination>
+            </SessionAttributes>
+            <ConfigurableHeaders>
+                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
+                <JMSExpiration>0</JMSExpiration>
+                <JMSPriority>4</JMSPriority>
+            </ConfigurableHeaders>
+            <ConnectionReference>/Connections/JMS Connection.sharedjmscon</ConnectionReference>
         </config>
         <pd:inputBindings>
-            <ns2:ActivityInput>
-                <message>
-                    <xsl:value-of select="concat(&quot;Error for  &quot;, $HTTP-Receiver/ProcessStarterOutput/parameters/shipmentNumber)"/>
-                </message>
-            </ns2:ActivityInput>
+            <ns4:ActivityInput>
+                <destinationQueue>
+                    <xsl:value-of select="&quot;TIBCO.CASE.STUDY&quot;"/>
+                </destinationQueue>
+                <Body>
+                    <xsl:value-of select="$Read-File/ns:ReadActivityOutputTextClass/fileContent/textContent"/>
+                </Body>
+            </ns4:ActivityInput>
         </pd:inputBindings>
     </pd:activity>
     <pd:activity name="Read File">
         <pd:type>com.tibco.plugin.file.FileReadActivity</pd:type>
         <pd:resourceType>ae.activities.FileReadActivity</pd:resourceType>
-        <pd:x>378</pd:x>
-        <pd:y>173</pd:y>
+        <pd:x>383</pd:x>
+        <pd:y>305</pd:y>
         <config>
             <encoding>text</encoding>
         </config>
@@ -370,6 +401,70 @@ WHERE shipment_num = ?</statement>
             </ResponseActivityInput>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="Send-HTTP-Response-1-1">
+        <pd:type>com.tibco.plugin.http.HTTPResponseActivity</pd:type>
+        <pd:resourceType>httppalette.httpWebResponse</pd:resourceType>
+        <pd:x>693</pd:x>
+        <pd:y>207</pd:y>
+        <config>
+            <closeConnection>true</closeConnection>
+            <eventSource>HTTP Receiver</eventSource>
+            <flushResponse>true</flushResponse>
+            <Headers>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </Headers>
+        </config>
+        <pd:inputBindings>
+            <ResponseActivityInput>
+                <asciiContent>
+                    <xsl:value-of select="&quot;&lt;h1>There was an error processing your request&lt;/h1>&quot;"/>
+                </asciiContent>
+                <Headers/>
+            </ResponseActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send-HTTP-Response-1-1-1">
+        <pd:type>com.tibco.plugin.http.HTTPResponseActivity</pd:type>
+        <pd:resourceType>httppalette.httpWebResponse</pd:resourceType>
+        <pd:x>131</pd:x>
+        <pd:y>301</pd:y>
+        <config>
+            <closeConnection>true</closeConnection>
+            <eventSource>HTTP Receiver</eventSource>
+            <flushResponse>true</flushResponse>
+            <Headers>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </Headers>
+        </config>
+        <pd:inputBindings>
+            <ResponseActivityInput>
+                <asciiContent>
+                    <xsl:value-of select="&quot;Download is starting&quot;"/>
+                </asciiContent>
+                <Headers/>
+            </ResponseActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:activity name="Transform XML">
         <pd:type>com.tibco.plugin.xml.XMLTransformActivity</pd:type>
         <pd:resourceType>ae.activities.XMLTransformActivity</pd:resourceType>
@@ -391,8 +486,8 @@ WHERE shipment_num = ?</statement>
     <pd:activity name="Write File">
         <pd:type>com.tibco.plugin.file.FileWriteActivity</pd:type>
         <pd:resourceType>ae.activities.FileWriteActivity</pd:resourceType>
-        <pd:x>690</pd:x>
-        <pd:y>68</pd:y>
+        <pd:x>699</pd:x>
+        <pd:y>69</pd:y>
         <config>
             <encoding>text</encoding>
             <compressFile>None</compressFile>
@@ -407,53 +502,6 @@ WHERE shipment_num = ?</statement>
                     <xsl:value-of select="$Render-XML/xmlString"/>
                 </textContent>
             </ns:WriteActivityInputTextClass>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="Error log">
-        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
-        <pd:resourceType>ae.activities.log</pd:resourceType>
-        <pd:x>148</pd:x>
-        <pd:y>292</pd:y>
-        <config>
-            <role>User</role>
-        </config>
-        <pd:inputBindings>
-            <ns2:ActivityInput>
-                <message>
-                    <xsl:value-of select="&quot;Parameters missing&quot;"/>
-                </message>
-            </ns2:ActivityInput>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="JMS Queue Sender">
-        <pd:type>com.tibco.plugin.jms.JMSQueueSendActivity</pd:type>
-        <pd:resourceType>ae.activities.JMSQueueSendActivity</pd:resourceType>
-        <pd:x>576</pd:x>
-        <pd:y>225</pd:y>
-        <config>
-            <PermittedMessageType>Text</PermittedMessageType>
-            <SessionAttributes>
-                <transacted>false</transacted>
-                <acknowledgeMode>1</acknowledgeMode>
-                <maxSessions>1</maxSessions>
-                <destination>TIBCO.CASE.STUDY</destination>
-            </SessionAttributes>
-            <ConfigurableHeaders>
-                <JMSDeliveryMode>PERSISTENT</JMSDeliveryMode>
-                <JMSExpiration>0</JMSExpiration>
-                <JMSPriority>4</JMSPriority>
-            </ConfigurableHeaders>
-            <ConnectionReference>/Connections/JMS Connection.sharedjmscon</ConnectionReference>
-        </config>
-        <pd:inputBindings>
-            <ns4:ActivityInput>
-                <destinationQueue>
-                    <xsl:value-of select="&quot;TIBCO.CASE.STUDY&quot;"/>
-                </destinationQueue>
-                <Body>
-                    <xsl:value-of select="$Read-File/ns:ReadActivityOutputTextClass/fileContent/textContent"/>
-                </Body>
-            </ns4:ActivityInput>
         </pd:inputBindings>
     </pd:activity>
     <pd:transition>
@@ -482,20 +530,6 @@ WHERE shipment_num = ?</statement>
         <pd:xpath>exists($HTTP-Receiver/ProcessStarterOutput/parameters/shipmentNumber)</pd:xpath>
     </pd:transition>
     <pd:transition>
-        <pd:from>JDBC Query</pd:from>
-        <pd:to>Log</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-52429</pd:lineColor>
-        <pd:conditionType>otherwise</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Log</pd:from>
-        <pd:to>End</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
         <pd:from>Transform XML</pd:from>
         <pd:to>Send-HTTP-Response-1</pd:to>
         <pd:lineType>Default</pd:lineType>
@@ -518,7 +552,7 @@ WHERE shipment_num = ?</statement>
     </pd:transition>
     <pd:transition>
         <pd:from>HTTP Receiver</pd:from>
-        <pd:to>Read File</pd:to>
+        <pd:to>Send-HTTP-Response-1-1-1</pd:to>
         <pd:xpathDescription>do Download</pd:xpathDescription>
         <pd:lineType>Straight</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
@@ -533,13 +567,6 @@ WHERE shipment_num = ?</statement>
         <pd:conditionType>otherwise</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Error log</pd:from>
-        <pd:to>End</pd:to>
-        <pd:lineType>Straight</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
         <pd:from>Read File</pd:from>
         <pd:to>JMS Queue Sender</pd:to>
         <pd:lineType>Default</pd:lineType>
@@ -549,6 +576,35 @@ WHERE shipment_num = ?</statement>
     <pd:transition>
         <pd:from>JMS Queue Sender</pd:from>
         <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Error log</pd:from>
+        <pd:to>Send-HTTP-Response-1-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send-HTTP-Response-1-1</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JDBC Query</pd:from>
+        <pd:to>Error log</pd:to>
+        <pd:xpathDescription>No results</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-52480</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send-HTTP-Response-1-1-1</pd:from>
+        <pd:to>Read File</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
