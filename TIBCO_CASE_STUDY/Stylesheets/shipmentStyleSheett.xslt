@@ -19,11 +19,15 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         <th>shipmentNumber</th>
         <th>shipmentType</th>
         <th>shipmentStatus</th>
+        <th>tradeLaneCde</th>
+        <th>confirmIodt</th>
       </tr>
       <tr>
         <td><xsl:value-of select="shipmentInfo/shipmentNumber"/></td>
         <td><xsl:value-of select="shipmentInfo/shipmentType"/></td>
         <td><xsl:value-of select="shipmentInfo/shipmentStatus"/></td>
+        <td><xsl:value-of select="shipmentInfo/tradeLaneCde"/></td>
+        <td><xsl:value-of select="shipmentInfo/confirmIodt"/></td>
       </tr>
     </table>
 

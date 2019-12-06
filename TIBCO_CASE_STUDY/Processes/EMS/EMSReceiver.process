@@ -11,7 +11,7 @@
         <pd:type>com.tibco.plugin.jms.JMSQueueEventSource</pd:type>
         <pd:resourceType>ae.activities.JMSQueueEventSource</pd:resourceType>
         <pd:x>101</pd:x>
-        <pd:y>81</pd:y>
+        <pd:y>85</pd:y>
         <config>
             <PermittedMessageType>Text</PermittedMessageType>
             <SessionAttributes>
@@ -31,7 +31,7 @@
     </pd:starter>
     <pd:endName>End</pd:endName>
     <pd:endX>626</pd:endX>
-    <pd:endY>84</pd:endY>
+    <pd:endY>85</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1575510576046</pd:targetNamespace>
@@ -43,6 +43,16 @@
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Confirm">
+        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
+        <pd:resourceType>activity.confirm</pd:resourceType>
+        <pd:x>490</pd:x>
+        <pd:y>86</pd:y>
+        <config>
+            <ConfirmEvent>JMS Queue Receiver</ConfirmEvent>
         </config>
         <pd:inputBindings/>
     </pd:activity>
@@ -59,8 +69,8 @@
     <pd:activity name="Parse XML">
         <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
         <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
-        <pd:x>218</pd:x>
-        <pd:y>79</pd:y>
+        <pd:x>226</pd:x>
+        <pd:y>85</pd:y>
         <config>
             <inputStyle>text</inputStyle>
             <xsdVersion>default</xsdVersion>
@@ -77,7 +87,7 @@
         <pd:type>com.tibco.plugin.file.FileWriteActivity</pd:type>
         <pd:resourceType>ae.activities.FileWriteActivity</pd:resourceType>
         <pd:x>351</pd:x>
-        <pd:y>83</pd:y>
+        <pd:y>85</pd:y>
         <config>
             <encoding>text</encoding>
             <compressFile>None</compressFile>
@@ -89,20 +99,10 @@
                     <xsl:value-of select="concat(&quot;D:\CSV\&quot;, $Parse-XML/shipmentInfo/shipmentNumber, &quot;.csv&quot;)"/>
                 </fileName>
                 <textContent>
-                    <xsl:value-of select="concat( &quot;Shipment Number&quot;, &quot;, &quot;, &quot;Shipment Type&quot; , &quot;, &quot;, &quot;Shipment Status&quot;, &quot;&#xA;&quot;,  $Parse-XML/shipmentInfo/shipmentNumber, &quot;, &quot; ,$Parse-XML/shipmentInfo/shipmentType,  &quot;, &quot;, $Parse-XML/shipmentInfo/shipmentStatus)"/>
+                    <xsl:value-of select="concat(&quot;Shipment Number, Shipment Type, Shipment Status, Trade Lane Code, Confirm Date&quot;,  &quot;&#xA;&quot;, $Parse-XML/shipmentInfo/shipmentNumber, &quot;, &quot; , $Parse-XML/shipmentInfo/shipmentType,  &quot;, &quot;, $Parse-XML/shipmentInfo/shipmentStatus, &quot;, &quot; , $Parse-XML/shipmentInfo/tradeLaneCde, &quot;, &quot; , $Parse-XML/shipmentInfo/confirmIodt )"/>
                 </textContent>
             </ns2:WriteActivityInputTextClass>
         </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="Confirm">
-        <pd:type>com.tibco.pe.core.ConfirmActivity</pd:type>
-        <pd:resourceType>activity.confirm</pd:resourceType>
-        <pd:x>487</pd:x>
-        <pd:y>85</pd:y>
-        <config>
-            <ConfirmEvent>JMS Queue Receiver</ConfirmEvent>
-        </config>
-        <pd:inputBindings/>
     </pd:activity>
     <pd:transition>
         <pd:from>Catch</pd:from>

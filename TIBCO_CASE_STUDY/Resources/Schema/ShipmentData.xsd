@@ -6,6 +6,8 @@
         <xs:element type="xs:long" name="shipmentNumber"/>
         <xs:element type="xs:string" name="shipmentType"/>
         <xs:element type="xs:string" name="shipmentStatus"/>
+        <xs:element type="xs:string" name="tradeLaneCde"/>
+        <xs:element type="xs:string" name="confirmIodt"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>

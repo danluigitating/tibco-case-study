@@ -350,6 +350,8 @@ WHERE shipment_num = ?</statement>
                             <xsd:element name="shipmentNumber" type="xsd:string"/>
                             <xsd:element name="shipmentType" type="xsd:string"/>
                             <xsd:element name="shipmentStatus" type="xsd:string"/>
+                            <xsd:element name="tradeLaneCde" type="xsd:string"/>
+                            <xsd:element name="confirmIodt" type="xsd:string"/>
                         </xsd:sequence>
                     </xsd:complexType>
                 </xsd:element>
@@ -366,6 +368,12 @@ WHERE shipment_num = ?</statement>
                 <shipmentStatus>
                     <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/SHIPMENT_STATUS"/>
                 </shipmentStatus>
+                <tradeLaneCde>
+                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/TRADE_LANE_CDE"/>
+                </tradeLaneCde>
+                <confirmIodt>
+                    <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/CONFIRMED_IODT"/>
+                </confirmIodt>
             </shipmentInfo>
         </pd:inputBindings>
     </pd:activity>
