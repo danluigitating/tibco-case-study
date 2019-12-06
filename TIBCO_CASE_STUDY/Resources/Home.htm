@@ -1,12 +1,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title></title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    <title>TIBCO Case Study</title>
     <style type="text/css">
         body
         {
             font-family: Arial;
             font-size: 10pt;
+            margin: 20pt;
+            align-items: center;
         }
         table
         {
@@ -24,17 +29,32 @@
             padding: 5px;
             border: 1px solid #ccc;
         }
+        div
+        {
+            padding: 20px;
+        }
     </style>
 </head>
 <body>
-    <h2>TIBCO Case Study</h2>
-    <input type="file" accept='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' id="fileUpload" />
-    <input type="button" id="upload" value="Upload" onclick="Upload()" />
-    <hr />
-    <div id="dvExcel">
+    <h1 align="center">TIBCO Case Study</h1>
+
+
+    <div class="ui middle aligned center aligned grid container">
+        <div class="ui input"><input type="file" placeholder="Upload File..." id="fileUpload" accept='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' /></div>
     </div>
+    
+    <div class="ui middle aligned center aligned grid container">
+         <button class="ui primary button" id="upload" onclick="Upload()"> Upload </button>
+    </div>
+
+    <br />
+    <br />
+    <br />
+    
+    <div id="dvExcel" class="ui middle aligned center aligned grid container" class="ui middle aligned center aligned grid container">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/xlsx.full.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/jszip.js"></script>
+    </div>
     <script type="text/javascript">
         function Upload() {
             //Reference the FileUpload element.
@@ -85,7 +105,7 @@
 
             //Create a HTML Table element.
             var table = document.createElement("table");
-            table.border = "1";
+            table.border = "0";
 
             //Add the header row.
             var row = table.insertRow(-1);
